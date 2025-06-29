@@ -1,0 +1,95 @@
+:root {
+  --bg: #f1f5f9;
+  --text: #1e293b;
+  --primary: #25D366;
+  --primary-hover: #1ebc59;
+}
+
+body[data-theme="dark"] {
+  --bg: #0f172a;
+  --text: #f1f5f9;
+}
+
+.home {
+  direction: rtl;
+  padding: 40px;
+  max-width: 900px;
+  margin: auto;
+  font-family: 'Cairo', sans-serif;
+  line-height: 1.8;
+  color: var(--text);
+  background-color: var(--bg);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.home-heading {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: var(--text);
+}
+
+.home-paragraph {
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.about-section {
+  margin-top: 30px;
+}
+
+.home-subheading {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.contact-section {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.whatsapp-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 20px;
+  background-color: var(--primary);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.whatsapp-button:hover {
+  background-color: var(--primary-hover);
+}
+
+@media (max-width: 600px) {
+  .home {
+    padding: 20px;
+  }
+
+  .home-heading {
+    font-size: 1.5rem;
+  }
+
+  .home-subheading {
+    font-size: 1.2rem;
+  }
+
+  .home-paragraph {
+    font-size: 0.95rem;
+  }
+
+  .whatsapp-button {
+    font-size: 15px;
+    padding: 10px 16px;
+  }
+}

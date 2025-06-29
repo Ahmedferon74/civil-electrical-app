@@ -1,0 +1,74 @@
+/* الخط العام */
+:root {
+  font-family: 'Cairo', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+
+  --bg: #ffffff;
+  --text: #1e293b;
+  --btn-bg: #1e293b;
+  --btn-text: #ffffff;
+  --link: #2563eb;
+  --link-hover: #1e40af;
+}
+
+/* الوضع الداكن */
+[data-theme='dark'] {
+  --bg: #0f172a;
+  --text: #e2e8f0;
+  --btn-bg: #f1f5f9;
+  --btn-text: #0f172a;
+  --link: #60a5fa;
+  --link-hover: #93c5fd;
+}
+
+/* عناصر عامة */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  transition: background 0.3s, color 0.3s;
+  min-height: 100vh;
+}
+
+/* روابط */
+a {
+  color: var(--link);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: var(--link-hover);
+}
+
+/* عناوين */
+h1, h2, h3, h4 {
+  margin: 0 0 15px 0;
+  font-weight: bold;
+}
+
+/* أزرار */
+button {
+  border-radius: 8px;
+  border: none;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+button:hover {
+  opacity: 0.9;
+}
+
+/* الوضع الافتراضي للنصوص */
+p {
+  margin: 0 0 12px 0;
+  line-height: 1.7;
+}

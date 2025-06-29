@@ -1,0 +1,224 @@
+/* إعدادات عامة */
+body {
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+  font-family: 'Cairo', sans-serif;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* الوضع الليلي */
+body[data-theme="dark"] {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+/* الحاوية العامة للتطبيق */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* شريط التنقل */
+.navbar {
+  background-color: #1e293b;
+  color: white;
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body[data-theme="dark"] .navbar {
+  background-color: #334155;
+  color: #e2e8f0;
+}
+
+.navbar .logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+body[data-theme="dark"] .nav-links a {
+  color: #cbd5e1;
+}
+
+.nav-links a:hover {
+  background-color: #334155;
+}
+
+body[data-theme="dark"] .nav-links a:hover {
+  background-color: #475569;
+}
+
+/* الأقسام */
+h1, h2, h3 {
+  color: #0f172a;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+body[data-theme="dark"] h1,
+body[data-theme="dark"] h2,
+body[data-theme="dark"] h3 {
+  color: #e2e8f0;
+}
+
+section {
+  margin-top: 30px;
+}
+
+/* النماذج */
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  font-size: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: white;
+  color: #1e293b;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body[data-theme="dark"] input,
+body[data-theme="dark"] textarea {
+  background-color: #334155;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+button {
+  background-color: #1e293b;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #334155;
+}
+
+body[data-theme="dark"] button {
+  background-color: #475569;
+  color: #e2e8f0;
+}
+
+body[data-theme="dark"] button:hover {
+  background-color: #64748b;
+}
+
+/* بطاقة الفيديو */
+.video-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin: 25px 0;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body[data-theme="dark"] .video-card {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  box-shadow: 0 1px 6px rgba(255,255,255,0.1);
+}
+
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-title {
+  margin-top: 15px;
+  font-size: 1.2rem;
+}
+
+.video-description {
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+body[data-theme="dark"] .video-description {
+  color: #94a3b8;
+}
+
+/* الصفحة الكاملة */
+main {
+  padding: 20px 40px;
+  flex: 1;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body[data-theme="dark"] main {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+/* التصميم المتجاوب */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  main {
+    padding: 15px 20px;
+  }
+
+  .video-card {
+    padding: 15px;
+  }
+
+  input,
+  textarea {
+    font-size: 0.95rem;
+  }
+
+  button {
+    width: 100%;
+  }
+}

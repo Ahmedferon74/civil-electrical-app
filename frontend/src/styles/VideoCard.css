@@ -1,0 +1,40 @@
+.video-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  direction: rtl;
+  text-align: center;
+}
+
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* نسبة عرض إلى ارتفاع 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.video-title {
+  font-size: 1.2rem;
+  color: #1e293b;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.video-description {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.6;
+}

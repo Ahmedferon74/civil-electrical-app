@@ -1,0 +1,97 @@
+:root {
+  --navbar-bg: #1e293b;
+  --navbar-text: #ffffff;
+  --navbar-hover: #334155;
+}
+
+body[data-theme='dark'] {
+  --navbar-bg: #0f172a;
+  --navbar-text: #f8fafc;
+  --navbar-hover: #1e293b;
+}
+
+body[data-theme='light'] {
+  --navbar-bg: #1e293b;
+  --navbar-text: #ffffff;
+  --navbar-hover: #334155;
+}
+
+.navbar {
+  background-color: var(--navbar-bg);
+  color: var(--navbar-text);
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  direction: rtl;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: var(--navbar-text);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: var(--navbar-hover);
+}
+
+/* زر تبديل الوضع */
+.theme-toggle-container {
+  margin-top: 10px;
+}
+
+.theme-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--navbar-text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: var(--navbar-text);
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  font-weight: bold;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--navbar-hover);
+}
+
+/* تصميم متجاوب للموبايل */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .nav-links a {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .theme-toggle-container {
+    align-self: flex-end;
+    margin-top: 10px;
+  }
+}
