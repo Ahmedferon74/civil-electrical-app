@@ -29,3 +29,9 @@ Thumbs.db
 .vite/
 .cache/
 tmp/
+__sapper__
+__svelte-kit__
+
+# Uploads (موجودة على Cloudinary)
+/backend/uploads/
+/media.json

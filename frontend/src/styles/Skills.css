@@ -19,7 +19,7 @@ body[data-theme='dark'] {
   color: var(--skills-text);
   padding: 30px;
   max-width: 900px;
-  margin: auto;
+  margin: 0 auto;
   font-family: 'Cairo', sans-serif;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.05);
@@ -51,6 +51,7 @@ body[data-theme='dark'] {
 .skills-section ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .skills-section li {
@@ -59,6 +60,7 @@ body[data-theme='dark'] {
   padding-left: 1.2rem;
   position: relative;
   line-height: 1.6;
+  font-size: 1rem;
 }
 
 .skills-section li::before {
@@ -66,6 +68,67 @@ body[data-theme='dark'] {
   position: absolute;
   right: 0;
   color: var(--skills-text);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ===== معرض الوسائط ===== */
+.media-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.media-item {
+  background-color: var(--skills-section-bg);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid var(--skills-border);
+  transition: background-color 0.3s ease;
+}
+
+.media-item h4 {
+  margin: 10px 0 5px;
+  color: var(--skills-text);
+  font-size: 1.1rem;
+}
+
+.media-item p {
+  margin-bottom: 10px;
+  color: var(--skills-subtext);
+  font-size: 0.95rem;
+}
+
+/* صور */
+.image-preview {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 2px solid var(--skills-border);
+  display: block;
+  object-fit: contain;
+}
+
+/* تغليف الفيديو */
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* نسبة 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 2px solid var(--skills-border);
+  margin-bottom: 10px;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
 }
 
 @media (max-width: 600px) {
@@ -83,5 +146,13 @@ body[data-theme='dark'] {
 
   .skills-section li {
     font-size: 0.95rem;
+  }
+
+  .media-item h4 {
+    font-size: 1rem;
+  }
+
+  .media-item p {
+    font-size: 0.9rem;
   }
 }

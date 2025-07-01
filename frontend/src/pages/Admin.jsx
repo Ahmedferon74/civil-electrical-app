@@ -1,22 +1,27 @@
-import React, { useState } from 'react';
-import '../styles/Admin.css';
-import { useMedia } from '../context/MediaContext';
+import React, { useState } from "react";
+import { useMedia } from "../context/MediaContext";
 
 const Admin = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [mediaUrl, setMediaUrl] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [mediaUrl, setMediaUrl] = useState("");
   const [file, setFile] = useState(null);
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState("");
   const [accessGranted, setAccessGranted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { mediaItems, addMedia, deleteMedia } = useMedia();
 
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const preset = import.meta.env.VITE_CLOUDINARY_PRESET;
+  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
   const handleAccess = () => {
-    if (code === '123456') {
+    const validCode = import.meta.env.VITE_ADMIN_CODE || "123456";
+    if (code === validCode) {
       setAccessGranted(true);
     } else {
-      alert('❌ الرمز غير صحيح');
+      alert("❌ الرمز غير صحيح");
     }
   };
 
@@ -24,83 +29,79 @@ const Admin = () => {
     e.preventDefault();
 
     if (!title || !description || (!mediaUrl && !file)) {
-      alert('⚠️ يرجى ملء جميع الحقول');
-      return;
+      return alert("⚠️ يرجى ملء جميع الحقول");
     }
 
     let uploadedUrl = mediaUrl;
-    let type = 'video';
+    let type = "video";
 
     try {
-      // رفع الملف إذا وُجد
-      if (file) {
-        const formData = new FormData();
-        formData.append('file', file);
+      setLoading(true);
 
-        const uploadRes = await fetch('http://localhost:5000/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
+      if (file) {
+        if (file.size > 100 * 1024 * 1024) {
+          alert("❌ لا يمكن رفع ملف أكبر من 10 ميجا بايت");
+          setLoading(false);
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", preset);
+
+        const uploadRes = await fetch(
+          `https://api.cloudinary.com/v1_1/${cloudName}/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (!uploadRes.ok) throw new Error("فشل رفع الملف إلى Cloudinary");
 
         const uploadData = await uploadRes.json();
-        uploadedUrl = uploadData.url;
-        type = file.type.startsWith('video') ? 'video' : 'image';
+        uploadedUrl = uploadData.secure_url;
+        type = file.type.startsWith("video") ? "video" : "image";
+      } else {
+        if (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be")) {
+          type = "video";
+        } else {
+          type = "image";
+        }
       }
 
-      // تحقق من وجود الملف أو الرابط مسبقًا في mediaItems
-      const exists = mediaItems.some((item) => item.url === uploadedUrl);
-      if (exists) {
-        alert('⚠️ هذا الملف أو الرابط موجود مسبقًا.');
-        return;
-      }
+      await addMedia({ title, description, url: uploadedUrl, type });
 
-      // إرسال البيانات للسيرفر
-      const mediaRes = await fetch('http://localhost:5000/api/media', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, description, url: uploadedUrl, type }),
-      });
+      alert("✅ تمت الإضافة بنجاح");
 
-      if (!mediaRes.ok) {
-        const errData = await mediaRes.json();
-        alert(`❌ خطأ: ${errData.error}`);
-        return;
-      }
-
-      const savedItem = await mediaRes.json();
-
-      // أضف العنصر الجديد للسياق
-      addMedia(savedItem);
-
-      alert('✅ تمت الإضافة بنجاح');
-
-      // تفريغ الحقول
-      setTitle('');
-      setDescription('');
-      setMediaUrl('');
+      setTitle("");
+      setDescription("");
+      setMediaUrl("");
       setFile(null);
     } catch (error) {
-      console.error('❌ خطأ في رفع الملف:', error);
-      alert('حدث خطأ أثناء رفع الملف');
+      console.error("❌ خطأ في رفع الملف:", error.message);
+      alert(`❌ حدث خطأ أثناء رفع الملف: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="admin-page">
       {!accessGranted ? (
-        <div style={{ maxWidth: '400px', margin: '50px auto', textAlign: 'center' }}>
+        <div style={{ maxWidth: "400px", margin: "50px auto", textAlign: "center" }}>
           <h3>🔐 أدخل رمز الدخول</h3>
           <input
             type="password"
             value={code}
             placeholder="رمز المشرف"
             onChange={(e) => setCode(e.target.value)}
-            style={{ padding: '10px', width: '100%', margin: '10px 0' }}
+            style={{ padding: "10px", width: "100%", margin: "10px 0" }}
           />
-          <button onClick={handleAccess}>دخول</button>
+          <button onClick={handleAccess}>🔓 دخول</button>
         </div>
       ) : (
-        <>
+        <div>
           <h2>لوحة تحكم المشرف</h2>
 
           <form className="admin-form" onSubmit={handleSubmit}>
@@ -114,7 +115,7 @@ const Admin = () => {
               placeholder="وصف مختصر"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
+            />
 
             <label>📁 اختر ملف من الجهاز:</label>
             <input
@@ -131,10 +132,12 @@ const Admin = () => {
               onChange={(e) => setMediaUrl(e.target.value)}
             />
 
-            <button type="submit">➕ إضافة</button>
+            <button type="submit" disabled={loading} style={{ opacity: loading ? 0.7 : 1 }}>
+              {loading ? "⏳ جاري الرفع..." : "➕ إضافة"}
+            </button>
           </form>
 
-          <h3 style={{ marginTop: '30px' }}>📂 المواد المضافة:</h3>
+          <h3 style={{ marginTop: "30px" }}>📂 المواد المضافة:</h3>
           {mediaItems.length === 0 ? (
             <p>🚫 لا توجد مواد مضافة بعد.</p>
           ) : (
@@ -142,28 +145,25 @@ const Admin = () => {
               <div key={item.id} className="media-item">
                 <h4>{item.title}</h4>
                 <p>{item.description}</p>
-                {item.type === 'video' ? (
+                {item.type === "video" ? (
                   <div className="video-wrapper">
                     <iframe
                       src={item.url}
                       title={item.title}
                       frameBorder="0"
                       allowFullScreen
-                    ></iframe>
+                    />
                   </div>
                 ) : (
                   <img src={item.url} alt={item.title} className="image-preview" />
                 )}
-                <button
-                  className="delete-btn"
-                  onClick={() => deleteMedia(item.id)}
-                >
+                <button className="delete-btn" onClick={() => deleteMedia(item.id)}>
                   🗑 حذف
                 </button>
               </div>
             ))
           )}
-        </>
+        </div>
       )}
     </div>
   );

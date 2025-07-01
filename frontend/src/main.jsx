@@ -1,18 +1,17 @@
-// src/main.jsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-
-// ✅ استيراد الـ Context الصحيح بدون .jsx
 import { MediaProvider } from './context/MediaContext';
+import { BrowserRouter } from 'react-router-dom'; // ✅ أضف هذا السطر
 
-// ✅ استيراد CSS الأساسي
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <MediaProvider>
-      <App />
-    </MediaProvider>
+    <BrowserRouter> {/* ✅ غلف التطبيق هنا */}
+      <MediaProvider>
+        <App />
+      </MediaProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

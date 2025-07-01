@@ -1,88 +1,81 @@
-// backend/server.js
 const express = require('express');
-const cors = require('cors');
 const fs = require('fs');
+const cors = require('cors');
 const path = require('path');
-const multer = require('multer');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const DATA_FILE = path.join(__dirname, 'media.json');
-
-// إعداد مجلد الرفع
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadDir),
-  filename: (req, file, cb) => {
-    const uniqueName = Date.now() + '-' + file.originalname;
-    cb(null, uniqueName);
-  },
-});
-const upload = multer({ storage });
 
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(uploadDir));
 
-// تحميل البيانات
-const loadMedia = () => {
-  if (!fs.existsSync(DATA_FILE)) return [];
-  const data = fs.readFileSync(DATA_FILE);
-  return JSON.parse(data);
-};
-
-// حفظ البيانات
-const saveMedia = (data) => {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
-};
-
-// API endpoints
+// تحميل الوسائط
 app.get('/api/media', (req, res) => {
-  const media = loadMedia();
-  res.json(media);
+  try {
+    if (!fs.existsSync(DATA_FILE)) return res.json([]);
+    const data = fs.readFileSync(DATA_FILE, 'utf8');
+    const media = JSON.parse(data);
+    res.json(media);
+  } catch (err) {
+    console.error('❌ قراءة البيانات فشلت:', err.message);
+    res.status(500).json({ error: 'فشل تحميل الوسائط' });
+  }
 });
 
-app.post('/api/upload', upload.single('file'), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'لم يتم رفع الملف' });
-  const fileUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`;
-  res.status(200).json({ url: fileUrl });
-});
-
+// إضافة وسائط (يسمح بالتكرار)
 app.post('/api/media', (req, res) => {
   const { title, description, url, type } = req.body;
+
   if (!title || !description || !url || !type) {
     return res.status(400).json({ error: 'جميع الحقول مطلوبة' });
   }
 
-  const media = loadMedia();
+  try {
+    const media = fs.existsSync(DATA_FILE)
+      ? JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'))
+      : [];
 
-  // تحقق من وجود العنصر مسبقاً بنفس الرابط url
-  const exists = media.find(item => item.url === url);
-  if (exists) {
-    return res.status(409).json({ error: 'هذا الملف أو الرابط موجود مسبقًا' });
+    const newItem = {
+      id: Date.now(),
+      title,
+      description,
+      url,
+      type,
+    };
+
+    media.push(newItem);
+    fs.writeFileSync(DATA_FILE, JSON.stringify(media, null, 2), 'utf8');
+
+    res.status(201).json(newItem);
+  } catch (err) {
+    console.error('❌ خطأ أثناء الحفظ:', err.message);
+    res.status(500).json({ error: 'فشل حفظ البيانات' });
   }
-
-  const newItem = { id: Date.now(), title, description, url, type };
-  media.unshift(newItem);
-  saveMedia(media);
-
-  res.status(201).json(newItem);
 });
 
+// حذف وسائط
 app.delete('/api/media/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  let media = loadMedia();
-  media = media.filter((item) => item.id !== id);
-  saveMedia(media);
-  res.status(204).end();
+
+  try {
+    if (!fs.existsSync(DATA_FILE)) return res.status(404).json({ error: 'الملف غير موجود' });
+
+    let media = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    const index = media.findIndex((item) => item.id === id);
+    if (index === -1) return res.status(404).json({ error: 'العنصر غير موجود' });
+
+    media.splice(index, 1);
+    fs.writeFileSync(DATA_FILE, JSON.stringify(media, null, 2), 'utf8');
+
+    res.json({ message: 'تم الحذف بنجاح' });
+  } catch (err) {
+    console.error('❌ خطأ أثناء الحذف:', err.message);
+    res.status(500).json({ error: 'فشل حذف البيانات' });
+  }
 });
 
-app.get('/', (req, res) => {
-  res.send('🎉 الباك إند شغال تمام!');
-});
-
+// تشغيل السيرفر
 app.listen(PORT, () => {
-  console.log(`🚀 السيرفر يعمل على: http://localhost:${PORT}`);
+  console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
