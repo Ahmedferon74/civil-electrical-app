@@ -11,6 +11,11 @@ const DATA_FILE = path.join(__dirname, 'media.json');
 app.use(cors());
 app.use(express.json());
 
+// راوت ترحيبي للمسار الرئيسي /
+app.get('/', (req, res) => {
+  res.send('📡 Welcome to Civil-Electrical API');
+});
+
 // تحميل الوسائط
 app.get('/api/media', (req, res) => {
   try {
