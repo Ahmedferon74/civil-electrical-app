@@ -11,12 +11,43 @@ const DATA_FILE = path.join(__dirname, 'media.json');
 app.use(cors());
 app.use(express.json());
 
-// راوت ترحيبي للمسار الرئيسي /
+// ✅ راوت ترحيبي محسّن للمسار الرئيسي /
 app.get('/', (req, res) => {
-  res.send('📡 Welcome to Civil-Electrical API');
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="ar" dir="rtl">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Civil-Electrical API</title>
+        <style>
+          body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: #f0f0f0;
+            color: #333;
+          }
+          a {
+            color: #007acc;
+            text-decoration: none;
+          }
+          a:hover {
+            text-decoration: underline;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>📡 مرحبًا بك في <strong>Civil-Electrical API</strong></h1>
+        <p>هذه هي الواجهة الخلفية (Backend) لتطبيق الهندسة المدنية والكهربائية.</p>
+        <p>لزيارة الموقع الكامل: <a href="https://civil-electrical-app.vercel.app" target="_blank">اضغط هنا</a></p>
+        <p>🛠️ استخدم المسارات مثل <code>/api/media</code> للتعامل مع البيانات.</p>
+      </body>
+    </html>
+  `);
 });
 
-// تحميل الوسائط
+// ✅ تحميل الوسائط
 app.get('/api/media', (req, res) => {
   try {
     if (!fs.existsSync(DATA_FILE)) return res.json([]);
@@ -29,7 +60,7 @@ app.get('/api/media', (req, res) => {
   }
 });
 
-// إضافة وسائط (يسمح بالتكرار)
+// ✅ إضافة وسائط
 app.post('/api/media', (req, res) => {
   const { title, description, url, type } = req.body;
 
@@ -60,7 +91,7 @@ app.post('/api/media', (req, res) => {
   }
 });
 
-// حذف وسائط
+// ✅ حذف وسائط
 app.delete('/api/media/:id', (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -81,7 +112,7 @@ app.delete('/api/media/:id', (req, res) => {
   }
 });
 
-// تشغيل السيرفر
+// ✅ تشغيل السيرفر
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
