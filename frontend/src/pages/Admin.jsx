@@ -39,7 +39,7 @@ const Admin = () => {
       setLoading(true);
 
       if (file) {
-        if (file.size > 100 * 1024 * 1024) {
+        if (file.size > 10 * 1024 * 1024) {
           alert("❌ لا يمكن رفع ملف أكبر من 10 ميجا بايت");
           setLoading(false);
           return;
@@ -51,10 +51,7 @@ const Admin = () => {
 
         const uploadRes = await fetch(
           `https://api.cloudinary.com/v1_1/${cloudName}/upload`,
-          {
-            method: "POST",
-            body: formData,
-          }
+          { method: "POST", body: formData }
         );
 
         if (!uploadRes.ok) throw new Error("فشل رفع الملف إلى Cloudinary");
@@ -78,9 +75,9 @@ const Admin = () => {
       setDescription("");
       setMediaUrl("");
       setFile(null);
-    } catch (error) {
-      console.error("❌ خطأ في رفع الملف:", error.message);
-      alert(`❌ حدث خطأ أثناء رفع الملف: ${error.message}`);
+    } catch (err) {
+      console.error("❌ خطأ في رفع الملف:", err.message);
+      alert(`❌ حدث خطأ أثناء رفع الملف: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -142,7 +139,7 @@ const Admin = () => {
             <p>🚫 لا توجد مواد مضافة بعد.</p>
           ) : (
             mediaItems.map((item) => (
-              <div key={item.id} className="media-item">
+              <div key={`media-${item.id}`} className="media-item">
                 <h4>{item.title}</h4>
                 <p>{item.description}</p>
                 {item.type === "video" ? (
@@ -152,6 +149,7 @@ const Admin = () => {
                       title={item.title}
                       frameBorder="0"
                       allowFullScreen
+                      sandbox="allow-same-origin allow-scripts allow-presentation"
                     />
                   </div>
                 ) : (

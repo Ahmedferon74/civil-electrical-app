@@ -1,15 +1,20 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
+// إنشاء السياق
 const MediaContext = createContext();
 
+// هوك مخصص للوصول إلى السياق بسهولة
 export const useMedia = () => {
   const context = useContext(MediaContext);
   if (!context) throw new Error("useMedia must be used within a MediaProvider");
   return context;
 };
 
+// المزود الرئيسي للسياق
 export const MediaProvider = ({ children }) => {
   const [mediaItems, setMediaItems] = useState([]);
+
+  // الرابط الأساسي من environment variable أو localhost كخيار افتراضي
   const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   // تحميل الوسائط من السيرفر
@@ -33,11 +38,12 @@ export const MediaProvider = ({ children }) => {
     }
   };
 
+  // تحميل البيانات عند بداية التشغيل
   useEffect(() => {
     fetchMedia();
   }, [API_BASE]);
 
-  // إضافة عنصر وسائط جديد (يسمح بالتكرار)
+  // إضافة عنصر وسائط جديد
   const addMedia = async (item) => {
     if (!item || !item.title || !item.url || !item.type) return;
 
@@ -78,7 +84,14 @@ export const MediaProvider = ({ children }) => {
   };
 
   return (
-    <MediaContext.Provider value={{ mediaItems, addMedia, deleteMedia, fetchMedia }}>
+    <MediaContext.Provider
+      value={{
+        mediaItems,
+        addMedia,
+        deleteMedia,
+        fetchMedia,
+      }}
+    >
       {children}
     </MediaContext.Provider>
   );
