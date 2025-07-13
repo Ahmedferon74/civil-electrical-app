@@ -1,0 +1,180 @@
+/* ضبط box-sizing ليشمل جميع العناصر */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* المتغيرات للوضع الفاتح */
+:root {
+  --admin-bg: #ffffff;
+  --admin-text: #1e293b;
+  --admin-subtext: #475569;
+  --admin-input-bg: #f8fafc;
+  --admin-border: #cbd5e1;
+  --admin-btn-bg: #1e293b;
+  --admin-btn-hover: #0f172a;
+  --admin-delete: #dc2626;
+  --admin-delete-hover: #b91c1c;
+}
+
+/* المتغيرات للوضع الداكن */
+body[data-theme='dark'] {
+  --admin-bg: #0f172a;
+  --admin-text: #f1f5f9;
+  --admin-subtext: #94a3b8;
+  --admin-input-bg: #1e293b;
+  --admin-border: #334155;
+  --admin-btn-bg: #1e293b;
+  --admin-btn-hover: #334155;
+  --admin-delete: #ef4444;
+  --admin-delete-hover: #b91c1c;
+}
+
+/* الصفحة الرئيسية للوحة المشرف */
+.admin-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  direction: rtl;
+  font-family: 'Cairo', sans-serif;
+  background-color: var(--admin-bg);
+  color: var(--admin-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* عنوان الصفحة */
+.admin-page h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+/* فورم الإدخال */
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+/* الحقول النصية والنصوص */
+.admin-form input,
+.admin-form textarea {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--admin-border);
+  font-size: 1rem;
+  background-color: var(--admin-input-bg);
+  color: var(--admin-text);
+  resize: vertical;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* تسميات الحقول */
+.admin-form label {
+  font-weight: bold;
+  color: var(--admin-subtext);
+  margin-top: 10px;
+}
+
+/* أزرار الإضافة */
+.admin-form button {
+  background-color: var(--admin-btn-bg);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.admin-form button:hover {
+  background-color: var(--admin-btn-hover);
+}
+
+/* صندوق عرض كل عنصر وسائط */
+.media-item {
+  margin-bottom: 30px;
+  background-color: var(--admin-input-bg);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid var(--admin-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* عنوان كل مادة */
+.media-item h4 {
+  margin: 10px 0 5px;
+  color: var(--admin-text);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* وصف المادة */
+.media-item p {
+  margin-bottom: 10px;
+  color: var(--admin-subtext);
+  font-size: 1rem;
+}
+
+/* صورة المعاينة */
+.image-preview {
+  width: 100%;          /* عرض كامل داخل العنصر الأب */
+  height: auto;         /* الحفاظ على نسبة العرض إلى الارتفاع */
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 2px solid var(--admin-border);
+  display: block;       /* لمنع ظهور الفراغات تحت الصور */
+  object-fit: contain;  /* احتواء الصورة بشكل جيد */
+}
+
+/* تغليف الفيديو لضبط النسبة */
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* نسبة 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 2px solid var(--admin-border);
+  margin-bottom: 10px;
+}
+
+/* iframe الفيديو */
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
+}
+
+/* زر الحذف */
+.delete-btn {
+  background-color: var(--admin-delete);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.delete-btn:hover {
+  background-color: var(--admin-delete-hover);
+}
+
+/* استجابة الشاشات الصغيرة */
+@media (max-width: 600px) {
+  .admin-page {
+    padding: 20px;
+  }
+
+  .admin-form input,
+  .admin-form textarea {
+    font-size: 0.95rem;
+  }
+}
