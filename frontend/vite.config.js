@@ -4,6 +4,10 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   base: './', // لحل مشاكل المسارات بعد النشر
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+  },
   server: {
     host: true,
     hmr: {
@@ -17,3 +21,4 @@ export default defineConfig({
     ]
   },
 });
+
